@@ -5,7 +5,9 @@
 #ifndef WHITE_CORE_H
 #define WHITE_CORE_H
 
+#include <stdint.h>
 #include <functional>
+#include <string>
 
 namespace White {
     enum class API : uint8_t {
@@ -23,7 +25,7 @@ namespace White {
         Fatal
     };
 
-    using CallbackType = std::function<void(MessageSeverity, const string&)>;
+    using CallbackType = std::function<void(MessageSeverity, const std::string&)>;
     struct InitOptions {
         API api = API::Vulkan;
         CallbackType callback;
