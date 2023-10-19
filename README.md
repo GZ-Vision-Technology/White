@@ -1,2 +1,2 @@
 # White
- Tiny RHI for nextgen graphics.
+ Tiny RHI for nextgen graphics API.
