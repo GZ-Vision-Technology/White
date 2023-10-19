@@ -37,3 +37,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${VK_INCLUDE})
 
 # Add test executable
 add_executable(White_test White.cpp)
+target_link_libraries(White_test PRIVATE White)
+target_include_directories(White_test PRIVATE Src)
