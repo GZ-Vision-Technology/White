@@ -33,8 +33,7 @@ target_compile_features(VulkanMemoryAllocator PUBLIC cxx_std_20)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${VK_LIBS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${VK_INCLUDE})
-
-
+target_compile_definitions(${PROJECT_NAME} PUBLIC )
 # Add test executable
 add_executable(White_test White.cpp)
 target_link_libraries(White_test PRIVATE White)

@@ -3,7 +3,8 @@
 
 int main()
 {
-    auto p = White::API::Vulkan;
+    White::InitOptions opt;
+    Init(opt);
     std::cout << "This is \"White\" Framework" << std::endl;
     return 0;
 }
