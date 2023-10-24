@@ -8,12 +8,7 @@
 #include <cassert>
 #include "vulkan/vulkan.h"
 #include "Common.h"
-#if __has_include(<vk_enum_string_helper.h>)
-#include <vk_enum_string_helper.h>
-#endif
-#if __has_include(<vulkan/vk_enum_string_helper.h>)
-#include <vulkan/vk_enum_string_helper.h>
-#endif
+#include "vulkan/vk_enum_string_helper.h"
 
 #define VK_CHECK(a) {auto VK_CHECK_RESULT = a; Assert(VK_CHECK_RESULT == VK_SUCCESS, std::string("Vulkan assertion failed: ") + # a + " -> " + string_VkResult(VK_CHECK_RESULT));}
 #define VK_VALID(a) {assert(a != VK_NULL_HANDLE);}
