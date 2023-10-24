@@ -28,12 +28,13 @@ add_library(${PROJECT_NAME} ${SOURCES})
 # Build VulkanMemoryAllocator
 add_subdirectory(Deps/VulkanMemoryAllocator EXCLUDE_FROM_ALL)
 target_include_directories(VulkanMemoryAllocator PUBLIC ${Vulkan_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${Vulkan_INCLUDE_DIRS})
 target_compile_features(VulkanMemoryAllocator PUBLIC cxx_std_20)
 
+# Set White target info
 target_link_libraries(${PROJECT_NAME} PRIVATE ${VK_LIBS})
 target_include_directories(${PROJECT_NAME} PUBLIC ${VK_INCLUDE})
-target_compile_definitions(${PROJECT_NAME} PUBLIC )
+target_compile_definitions(${PROJECT_NAME} PRIVATE $<IF:$<CONFIG:DEBUG>,DEBUG,NDEBUG>)
+
 # Add test executable
 add_executable(White_test White.cpp)
 target_link_libraries(White_test PRIVATE White)
