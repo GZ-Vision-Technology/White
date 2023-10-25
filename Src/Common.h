@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <functional>
 #include <string>
+#include <memory>
 
 namespace White{
     enum class API : uint8_t {
@@ -17,6 +18,7 @@ namespace White{
         Vulkan,
         WebGPU
     };
+    static API sCurrentAPI = API::Noop;
 
     enum class MessageSeverity : uint8_t {
         Noop,
@@ -51,6 +53,12 @@ namespace White{
             FatalError(msg);
         }
     }
+
+#define IMPLEMENT_OBJECT_POINTER(obj) \
+struct obj;                            \
+using obj##Ptr = std::shared_ptr<obj>;
+
+
 }
 
 #endif //WHITE_COMMON_H

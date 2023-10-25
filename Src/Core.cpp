@@ -8,6 +8,7 @@
 namespace White {
 
     void Init(const White::InitOptions &options) {
+        sCurrentAPI = options.api;
         switch (options.api) {
             case API::Vulkan:
                 InitVK(options);

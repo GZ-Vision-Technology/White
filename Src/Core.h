@@ -8,6 +8,7 @@
 #include "Common.h"
 
 namespace White {
+
     void Init(const InitOptions& options);
 
     void ShutDown();

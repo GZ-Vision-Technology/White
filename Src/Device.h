@@ -5,17 +5,16 @@
 #ifndef WHITE_DEVICE_H
 #define WHITE_DEVICE_H
 
-#include <memory>
-
+#include "Common.h"
 // The Device Interface struct.
 namespace White {
+    IMPLEMENT_OBJECT_POINTER(IDevice);
     struct IDevice {
         virtual ~IDevice() {}
-        static auto CreateDevice();
+        static IDevicePtr CreateDevice();
 
         // Virtual auto CreateSwapchain(auto, RGLCommandQueuePtr, int width, int height) = 0;
     };
-    using DevicePtr = std::shared_ptr<IDevice>;
 }
 
 #endif //WHITE_DEVICE_H

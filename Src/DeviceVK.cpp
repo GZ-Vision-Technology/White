@@ -3,3 +3,8 @@
 //
 
 #include "DeviceVK.h"
+namespace White {
+    DeviceVKPtr CreateDeviceVK() {
+        return std::make_shared<DeviceVK>();
+    }
+}
