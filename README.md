@@ -2,9 +2,16 @@
  Tiny RHI for nextgen graphics API.
 ### Feature
 
-- Support Vulkan.
+- Runtime shader compilation via compiler library.
 
-### Support Platforms
+### Backends Support
+| Backend | Progress |     |
+|---------|:--------:|-----|
+| Vulkan  |  Doing   |     |
+| DX12    |   Todo   |     |
+| Metal   |   Todo   |     |
+
+### Support Platfrom
 
 - Windows
 - Linux
