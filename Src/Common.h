@@ -44,6 +44,7 @@ namespace White{
 
     void LogMessage(MessageSeverity, const std::string&);
     void FatalError(const std::string&);
+
     template<typename T>
     static void Assert(bool cond, const T& msg) {
         if (!cond) {

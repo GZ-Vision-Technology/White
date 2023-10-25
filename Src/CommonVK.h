@@ -1,9 +1,9 @@
 //
-// Created by Zzz on 2023/10/20.
+// Created by Zzz on 2023/10/25.
 //
 
-#ifndef VK_COMMON_H
-#define VK_COMMON_H
+#ifndef WHITE_COMMONVK_H
+#define WHITE_COMMONVK_H
 
 #include <cassert>
 #include "vulkan/vulkan.h"
@@ -21,7 +21,7 @@ constexpr bool enableValidationLayer =
 #endif
 
 constexpr const char* validationLayers[] = {
-     "VK_LAYER_KHRONOS_validation"
+        "VK_LAYER_KHRONOS_validation"
 };
 
 namespace White {
@@ -30,4 +30,4 @@ namespace White {
     void DestoryVK();
 }
 
-#endif //VK_COMMON_H
+#endif //WHITE_COMMONVK_H

@@ -3,7 +3,7 @@
 //
 
 #include "Core.h"
-#include "VKCommon.h"
+#include "CommonVK.h"
 
 namespace White {
 
