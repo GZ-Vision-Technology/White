@@ -28,9 +28,6 @@ namespace White {
 
     void LogMessage(MessageSeverity severity, const std::string &str) {
         callbackFn(severity, str);
-
-        // crash the program
-        // the user should not try to catch this, UB lies beyond
         if (severity == MessageSeverity::Fatal) {
             throw std::runtime_error(str);
         }

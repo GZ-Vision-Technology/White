@@ -6,11 +6,11 @@
 #define WHITE_CORE_H
 
 #include "Common.h"
+#include "DeviceVK.h"
 
 namespace White {
 
     void Init(const InitOptions& options);
-
     void ShutDown();
 }
 

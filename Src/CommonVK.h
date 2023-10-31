@@ -25,9 +25,13 @@ constexpr const char* validationLayers[] = {
 };
 
 namespace White {
-    static VkInstance vkIns;
-    void InitVK(const InitOptions& option);
-    void DestoryVK();
+    struct CommonVK {
+        static VkInstance sVkIns;
+
+        static void InitVK(const InitOptions &option);
+
+        static void DestoryVK();
+    };
 }
 
 #endif //WHITE_COMMONVK_H

@@ -9,8 +9,12 @@
 #include <memory>
 
 namespace White {
-struct DeviceD3D12 : public IDevice, public std::enable_shared_from_this<DeviceD3D12> {
 
-};
+    IMPLEMENT_OBJECT_POINTER(DeviceD3D12)
+    struct DeviceD3D12 {
+
+        virtual ~DeviceD3D12();
+    };
+    DeviceD3D12Ptr CreateDeviceD3D12();
 }
 #endif //WHITE_DEVICE_D3D12_H

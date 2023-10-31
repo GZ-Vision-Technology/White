@@ -4,6 +4,7 @@
 
 #include "Core.h"
 #include "CommonVK.h"
+#include "DeviceVK.h"
 
 namespace White {
 
@@ -11,7 +12,7 @@ namespace White {
         sCurrentAPI = options.api;
         switch (options.api) {
             case API::Vulkan:
-                InitVK(options);
+                CommonVK::InitVK(options);
                 break;
             case API::Dx12:
             case API::Metal:

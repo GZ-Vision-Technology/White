@@ -18,7 +18,7 @@ namespace White{
         Vulkan,
         WebGPU
     };
-    static API sCurrentAPI = API::Noop;
+    static API sCurrentAPI = API::Vulkan;
 
     enum class MessageSeverity : uint8_t {
         Noop,

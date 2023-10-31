@@ -3,9 +3,7 @@
 //
 
 #include "Device.h"
-#include "Common.h"
 #include "DeviceVK.h"
-#include "DeviceD3D12.h"
 
 namespace White {
 
@@ -13,8 +11,12 @@ namespace White {
         switch (White::sCurrentAPI) {
             case API::Vulkan:
                 return CreateDeviceVK();
+            case API::Dx12:
+            case API::Metal:
+            case API::WebGPU:
             default:
                 return nullptr;
         }
     }
+
 }

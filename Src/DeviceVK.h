@@ -5,15 +5,30 @@
 #ifndef WHITE_DEVICE_VK_H
 #define WHITE_DEVICE_VK_H
 
-#include "Device.h"
+#include <optional>
 #include "Vulkan/vulkan.h"
+#include "Device.h"
 
     namespace White {
-        IMPLEMENT_OBJECT_POINTER(DeviceVK)
-        struct DeviceVK : public IDevice, public std::enable_shared_from_this<DeviceVK> {
-            VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-            virtual ~DeviceVK();
+
+        struct QueueFamilyIndices {
+            std::optional<uint32_t> graphicsFamily;
+            std::optional<uint32_t> presentFamily;
+            bool isComplete() {
+                return graphicsFamily.has_value() && presentFamily.has_value();
+            }
         };
+
+        IMPLEMENT_OBJECT_POINTER(DeviceVK);
+        struct DeviceVK : public  IDevice, public std::enable_shared_from_this<DeviceVK> {
+            VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+            VkDevice device = VK_NULL_HANDLE;
+            QueueFamilyIndices indices;
+
+            explicit DeviceVK(VkPhysicalDevice);
+            virtual ~DeviceVK() {};
+        };
+
         DeviceVKPtr CreateDeviceVK();
     }
 

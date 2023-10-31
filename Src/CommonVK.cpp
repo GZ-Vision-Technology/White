@@ -8,6 +8,7 @@
 
 namespace White {
 
+    VkInstance CommonVK::sVkIns = VK_NULL_HANDLE;
     VkDebugUtilsMessengerEXT debugMessenger = VK_NULL_HANDLE;
 
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
@@ -58,7 +59,7 @@ namespace White {
         }
     }
 
-    void InitVK(const InitOptions &option) {
+    void CommonVK::InitVK(const InitOptions &option) {
         VkApplicationInfo appInfo{
                 .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
                 .pApplicationName = option.appName.c_str(),
@@ -111,7 +112,7 @@ namespace White {
         insInfo.ppEnabledExtensionNames = extensions.data();
         insInfo.enabledExtensionCount = extensions.size();
 
-        VK_CHECK(vkCreateInstance(&insInfo, nullptr, &vkIns));
+        VK_CHECK(vkCreateInstance(&insInfo, nullptr, &sVkIns));
 
         if constexpr (enableValidationLayer) {
             VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{
@@ -125,12 +126,12 @@ namespace White {
                     .pfnUserCallback = debugCallback,
                     .pUserData = nullptr
             };
-            VK_CHECK(CreateDebugUtilsMessengerEXT(vkIns, &debugCreateInfo, nullptr, &debugMessenger));
+            VK_CHECK(CreateDebugUtilsMessengerEXT(sVkIns, &debugCreateInfo, nullptr, &debugMessenger));
         }
     }
 
-    void DestoryVK() {
-        DestroyDebugUtilsMessengerEXT(vkIns, debugMessenger, nullptr);
-        vkDestroyInstance(vkIns, nullptr);
+    void CommonVK::DestoryVK() {
+        DestroyDebugUtilsMessengerEXT(sVkIns, debugMessenger, nullptr);
+        vkDestroyInstance(sVkIns, nullptr);
     }
 }
