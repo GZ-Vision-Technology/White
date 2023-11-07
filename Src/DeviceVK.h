@@ -24,6 +24,7 @@
             VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
             VkDevice device = VK_NULL_HANDLE;
             QueueFamilyIndices indices;
+            VkQueue queue;
 
             explicit DeviceVK(VkPhysicalDevice);
             virtual ~DeviceVK() {};

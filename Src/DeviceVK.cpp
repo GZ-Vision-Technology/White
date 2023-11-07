@@ -49,6 +49,22 @@ namespace White {
         return queueFamily;
     }
 
+    bool CheckDeviceExtensionSupport(const VkPhysicalDevice device) {
+        uint32_t extensionCount;
+        vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
+
+        std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+        vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, availableExtensions.data());
+
+        std::set<std::string> requiredExtensions(std::begin(gDeviceExtensions), std::end(gDeviceExtensions));
+
+        for (const auto& extension : availableExtensions) {
+            requiredExtensions.erase(extension.extensionName);
+        }
+
+        return requiredExtensions.empty();
+    };
+
     DeviceVK::DeviceVK(VkPhysicalDevice dv) : physicalDevice(dv) {
         indices = FindQueueFamilies(dv);
         float priority = 1.0f;
@@ -63,12 +79,25 @@ namespace White {
             };
             queueCreateInfos.emplace_back(createInfo);
         }
+        std::vector<const char*> runtimeExtensions{std::begin(gDeviceExtensions),std::end(gDeviceExtensions)};
+#ifdef DEBUG
+        runtimeExtensions.push_back(VK_EXT_DEBUG_MARKER_EXTENSION_NAME);
+#endif
+        VkPhysicalDeviceFeatures deviceFeatures {};
         VkDeviceCreateInfo createInfo {
             .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
             .queueCreateInfoCount = (uint32_t)queueCreateInfos.size(),
-            .pQueueCreateInfos = queueCreateInfos.data()
+            .pQueueCreateInfos = queueCreateInfos.data(),
+            .enabledExtensionCount = (uint32_t)runtimeExtensions.size(),
+            .ppEnabledExtensionNames = runtimeExtensions.data(),
+            .pEnabledFeatures = &deviceFeatures
         };
+        if (enableValidationLayer) {
+            createInfo.enabledLayerCount = std::size(validationLayers);
+            createInfo.ppEnabledLayerNames = validationLayers;
+        }
         VK_CHECK( vkCreateDevice(dv, &createInfo, nullptr, &device));
+        vkGetDeviceQueue(device, indices.presentFamily.value(), 0, &queue);
     }
 
     DeviceVKPtr CreateDeviceVK() {
@@ -81,8 +110,9 @@ namespace White {
         auto isDeviceSuitable = [](const VkPhysicalDevice& phyDevice) -> bool {
             // Check whether the device is suitable.
             QueueFamilyIndices queueFamily = FindQueueFamilies(phyDevice);
+            bool extensionSupport = CheckDeviceExtensionSupport(phyDevice);
 
-            return queueFamily.isComplete() ? true : false;
+            return queueFamily.isComplete() &&  extensionSupport ? true : false;
         };
 
         auto ratePhyDevice = [](const VkPhysicalDevice& phyDevice) -> uint32_t {
