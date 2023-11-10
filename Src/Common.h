@@ -5,45 +5,46 @@
 #ifndef WHITE_COMMON_H
 #define WHITE_COMMON_H
 
-#include <cstdint>
-#include <functional>
-#include <string>
+#include <stdexcept>
 #include <memory>
+#include "vulkan/vulkan.h"
 
-namespace White{
-    enum class API : uint8_t {
-        Noop,
-        Metal,
-        Dx12,
-        Vulkan,
-        WebGPU
+namespace White {
+
+    #define DEFINE_OBJECT_SHARED_POINTER(obj)           \
+            struct obj;                                 \
+            using obj##SharedPtr = std::shared_ptr<obj>;
+
+    #define CHECK_VK_ERROR_AND_THROW(rst)                                                    \
+    {                                                                                        \
+            if (rst != VK_SUCCESS)                                                           \
+            {                                                                                \
+                std::string rstS = "VK ERROR : Error number: " + std::to_string(rst) + " | " \
+                                    + "File name: " + __FILE__ + " | "                       \
+                                    + "Function name: " + __FUNCTION__ + " | "               \
+                                    + "Line number: " + std::to_string(__LINE__) ;           \
+                throw std::runtime_error(rstS);                                              \
+            }                                                                                \
+    }
+
+    constexpr bool ENABLE_VALIDATION =
+    #ifdef DEBUG
+            true;
+    #else
+            false;
+    #endif
+
+    template<typename T>
+    struct DefineSharedPtr : public std::enable_shared_from_this<T> {
+        using SharedPtr = std::shared_ptr<T>;
     };
-    static API sCurrentAPI = API::Vulkan;
 
     enum class MessageSeverity : uint8_t {
-        Noop,
-        Info,
+        Info = 0,
         Warning,
         Error,
         Fatal
     };
-
-    using CallbackType = std::function<void(MessageSeverity, const std::string&)>;
-    struct InitOptions {
-        API api = API::Vulkan;
-        CallbackType callback;
-        std::string appName;
-        std::string engineName;
-        struct Version{
-            uint8_t variant = 0;
-            uint8_t major = 0;
-            uint8_t minor = 0;
-            uint8_t patch = 0;
-        }
-                appVersion,
-                engineVersion;
-    };
-
     void LogMessage(MessageSeverity, const std::string&);
     void FatalError(const std::string&);
 
@@ -53,12 +54,6 @@ namespace White{
             FatalError(msg);
         }
     }
-
-#define IMPLEMENT_OBJECT_POINTER(obj) \
-struct obj;                            \
-using obj##Ptr = std::shared_ptr<obj>;
-
-
 }
 
 #endif //WHITE_COMMON_H

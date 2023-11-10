@@ -2,13 +2,15 @@
 // Created by Zzz on 2023/10/20.
 //
 
-#include <iostream>
+#include <cstdio>
+#include <functional>
+#include "iostream"
 #include "Common.h"
 
 namespace White {
-
-    static CallbackType callbackFn = [](MessageSeverity severity, const std::string &message) {
-        constexpr auto severityToStr = [](MessageSeverity severity) {
+    using CallBackFunc = std::function<void(MessageSeverity, const std::string&)>;
+    static CallBackFunc CBFunc = [](MessageSeverity severity, const std::string& message) {
+        constexpr auto SeverityToStr = [](MessageSeverity severity) {
             switch (severity) {
                 case MessageSeverity::Info:
                     return "Info";
@@ -18,16 +20,15 @@ namespace White {
                     return "Error";
                 case MessageSeverity::Fatal:
                     return "Fatal";
-                case MessageSeverity::Noop:
                 default:
-                    return "Noop";
+                    return "Unknown";
             }
         };
-        std::cout << "RHI [" << severityToStr(severity) << "] : " << message << std::endl;
+        std::cout << "White [" << SeverityToStr(severity) << "] - " << message << "\n";
     };
 
-    void LogMessage(MessageSeverity severity, const std::string &str) {
-        callbackFn(severity, str);
+    void LogMessage(MessageSeverity severity, const std::string& str) {
+        CBFunc(severity, str);
         if (severity == MessageSeverity::Fatal) {
             throw std::runtime_error(str);
         }
@@ -36,4 +37,5 @@ namespace White {
     void FatalError(const std::string& str) {
         LogMessage(MessageSeverity::Fatal, str);
     }
+
 }
