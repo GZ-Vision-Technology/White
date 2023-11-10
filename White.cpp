@@ -1,12 +1,22 @@
 #include <iostream>
-#include "Core.h"
-#include "Device.h"
+#include "Common.h"
+#include "VulkanInstance.h"
 
 int main()
 {
-    White::InitOptions opt;
-    Init(opt);
-    auto p = White::IDevice::CreateDevice();
-    std::cout << "This is \"White\" Framework" << std::endl;
+    try
+    {
+        White::VulkanInstance::CreateInfo CI {
+            .ApiVersion = VK_API_VERSION_1_0,
+            .EnableValidation = true,
+        };
+        auto p = White::VulkanInstance::Create(CI);
+
+        std::cout << "This is \"White\" Framework" << std::endl;
+    }
+    catch (std::runtime_error& err)
+    {
+        std::cout << err.what() << std::endl;
+    }
     return 0;
 }
